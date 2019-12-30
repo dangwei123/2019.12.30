@@ -1,0 +1,185 @@
+//1.考勤系统
+create database attend_system;
+use attend_system;
+
+create table employee
+(
+id int primary key,
+name varchar(20) not null
+);
+desc employee;
+
+drop table if exists attendance;
+create table attendance
+(
+employee_id int primary key,
+name varchar(20) not null,
+attend_num int default 0,
+foreign key(employee_id) references employee(id)
+);
+desc attendance;
+
+//2.学校宿舍管理系统
+
+create database dor_management_system;
+use dor_management_system;
+
+create table dormitory
+(
+id int primary key,
+name varchar(20) not null
+);
+desc dormitory;
+
+create table student
+(
+id int primary key,
+name varchar(20) not null
+);
+desc student;
+
+create table record
+(
+dor_id int primary key,
+re_num int default 0,
+leavl varchar(20) not null,
+foreign key(dor_id) references dormitory(id)
+);
+desc record;
+
+//3.车辆违章系统
+create database cars_illegal;
+use cars_illegal;
+
+create table owner
+(
+credit_id bigint primary key,
+name varchar(20) not null
+);
+desc owner;
+
+create table cars
+(
+car_number bigint primary key,
+colour varchar(20) not null
+);
+desc cars;
+
+create table illegal
+(
+owner_id bigint ,
+name varchar(20),
+car_number bigint,
+primary key(owner_id,car_number)
+);
+desc illegal;
+
+//4.学校食堂管理系统
+create database canteen_syetem;
+use canteen_syetem;
+
+create table canteen 
+(
+name varchar(20) primary key,
+
+);
+
+
+public class InsertCase {
+    public static void createTable() {
+        Connection connection=null;
+        Statement state=null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+             connection=DriverManager.getConnection(
+                    "jdbc:mysql://localhost/my_jdbc_db","root","");
+             state=connection.createStatement();
+             String str="create table jdbctable"+"(name varchar(20),id int);";
+             state.execute(str);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection!=null){
+                    connection.close();
+                }
+                if(state!=null){
+                    state.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void insertIntoTable(){
+        Connection connection=null;
+        Statement state=null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection=DriverManager.getConnection(
+                    "jdbc:mysql://localhost/my_jdbc_db","root","");
+            state=connection.createStatement();
+            String str="insert into"+" jdbctable values('haha',1);";
+            state.execute(str);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection!=null){
+                    connection.close();
+                }
+                if(state!=null){
+                    state.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void select(){
+        Connection connection=null;
+        Statement state=null;
+        ResultSet re=null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection=DriverManager.getConnection(
+                    "jdbc:mysql://localhost/my_jdbc_db","root","");
+            state=connection.createStatement();
+            String str="select * from jdbctable";
+            state.execute(str);
+
+            re=state.executeQuery(str);
+            while(re.next()){
+                String c1=re.getString("name");
+                Integer c2=re.getInt("id");
+                System.out.println("name:"+c1+" id:"+c2);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(connection!=null){
+                    connection.close();
+                }
+                if(state!=null){
+                    state.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void main(String[] args) {
+        //createTable();
+        insertIntoTable();
+        select();
+    }
+}
